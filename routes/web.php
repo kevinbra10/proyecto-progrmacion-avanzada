@@ -21,3 +21,10 @@ Route::post('/contacto', [PaginaController::class, 'procesarContacto'])->name('c
 
 // RUTA 6 — Productos
 Route::get('/productos', [ProductoController::class, 'productos'])->name('productos');
+
+
+// Ruta para el 'home'
+Route::get('/', [HomeController::class, 'index'])->name('home');
+
+// Ruta para 'estudiantes'
+Route::get('/estudiantes', [EstudianteController::class, 'index'])->name('estudiantes.index');
