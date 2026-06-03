@@ -3,42 +3,42 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Clases\Estudiante;
+use App\Clases\Materia;
 
-class EstudianteController {
-    
-    public function index(): void {
+class EstudianteController extends Controller 
+{
+    // 1. LISTA GENERAL DE ESTUDIANTES
+    public function index() 
+    {
         $titulo = "Lista de Estudiantes";
         $estudiantes = $this->obtenerEstudiantes();
 
-        require_once 'views/layout/header.php';
-        require_once 'views/estudiantes/lista.php';
-        require_once 'views/layout/footer.php';
+        // Llamamos a la vista nativa de Laravel pasándole los datos dinámicos
+        return view('estudiantes', compact('estudiantes', 'titulo'));
     }
 
-    public function detalle(): void {
-        $id = (int)($_GET['id'] ?? 0);
+    // 2. DETALLE DE UN ESTUDIANTE ESPECÍFICO (Se pasa el ID por la URL de Laravel)
+    public function detalle($id) 
+    {
         $todos = $this->obtenerEstudiantes();
+        $id = (int)$id;
 
-        // Validación de existencia de ID
+        // Validación de existencia de ID al estilo Laravel
         if (!isset($todos[$id])) {
-            $titulo = "Estudiante no encontrado";
-            require_once 'views/layout/header.php';
-            echo "<h2>No existe un estudiante con ese ID.</h2>";
-            echo "<a class='btn btn-volver' href='index.php?pagina=estudiantes'>← Volver a la lista</a>";
-            require_once 'views/layout/footer.php';
-            return;
+            abort(404, "Estudiante no encontrado");
         }
 
         $titulo = "Detalle del Estudiante";
         $estudiante = $todos[$id]; 
 
-        require_once 'views/layout/header.php';
-        require_once 'views/estudiantes/detalle.php';
-        require_once 'views/layout/footer.php';
+        // Retornamos la vista de detalle pasándole el objeto estudiante y su ID
+        return view('estudiantes_detalle', compact('estudiante', 'titulo', 'id'));
     }
 
-    private function obtenerEstudiantes(): array {
-       
+    // 3. TU MATRIZ DE DATOS EN POO
+    private function obtenerEstudiantes(): array 
+    {
         $e1 = new Estudiante("Mario Bros", "mario@star.com", "Ingenieria de Sistemas", "123");
         $e1->agregarMateria(new Materia("Programacion I", "123", 5, 85));
         $e1->agregarMateria(new Materia("Calculo I", "234", 5, 45));
