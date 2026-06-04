@@ -25,38 +25,12 @@ class PublicacionController extends Controller
             'categoria' => 'required'
         ]);
 
-        // Aseguramos que exista al menos una carrera con ID 1 en la base de datos
-        $carreraExiste = DB::table('carreras')->where('id', 1)->exists();
-        if (!$carreraExiste) {
-            DB::table('carreras')->insert([
-                'id' => 1,
-                'nombre_carrera' => 'Ingenieria de Sistemas',
-                'created_at' => now(),
-                'updated_at' => now()
-            ]);
-        }
+        $estudianteId = session('estudiante_id', 1);
 
-        // Verificamos si el estudiante ya existe
-        $estudianteExiste = DB::table('estudiantes')->where('id', 1)->exists();
-
-        // Si no existe, lo creamos enviando todos los campos que exige tu phpMyAdmin
-        if (!$estudianteExiste) {
-            DB::table('estudiantes')->insert([
-                'id' => 1,
-                'nombre' => 'Kevin Colque',
-                'email' => 'kevin@universidad.com',
-                'matricula' => '2026-SYS', // Enviamos la matricula obligatoria
-                'carrera_id' => 1,          // Lo conectamos con la carrera ID 1
-                'created_at' => now(),
-                'updated_at' => now()
-            ]);
-        }
-
-        // Guardamos la publicacion
         DB::table('publicaciones')->insert([
             'contenido' => $request->contenido,
             'categoria' => $request->categoria,
-            'estudiante_id' => 1, 
+            'estudiante_id' => $estudianteId, 
             'created_at' => now(),
             'updated_at' => now()
         ]);
