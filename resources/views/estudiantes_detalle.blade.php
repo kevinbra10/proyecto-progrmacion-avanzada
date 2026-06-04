@@ -1,46 +1,46 @@
 @extends('layouts.app')
 
 @section('content')
-    <div style="background: white; padding: 30px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.05);">
-        <h1 style="color: #1a3c5e;">{{ $titulo }}</h1>
-        
+    <div class="tarjeta">
+        <h1>{{ $titulo }}</h1>
         <h2>{{ $estudiante->getNombre() }}</h2>
+        
         <p><strong>Matricula:</strong> {{ $estudiante->getMatricula() }}</p>
         <p><strong>Carrera:</strong> {{ $estudiante->getCarrera() }}</p>
-        <p><strong>Rol:</strong> {{ $estudiante->getRol() }}</p>
+        <p><strong>Rol en el Sistema:</strong> {{ $estudiante->getRol() }}</p>
+        <p><strong>Promedio General:</strong> {{ $estudiante->calcularPromedio() }}</p>
 
-        <p><strong>Promedio General:</strong> {{ $estudiante->calcularPromedio() }} ({{ $estudiante->getEstado() }})</p>
-
-        <h3 style="margin-top: 30px; color: #1a3c5e;">Materias Inscritas:</h3>
-        <table style="width: 100%; border-collapse: collapse; margin-top: 10px;">
+        <h3 style="margin-top: 30px; color: #1a3c5e;">Materias Inscritas</h3>
+        
+        <table>
             <thead>
-                <tr style="background: #f0f4f8; text-align: left;">
-                    <th style="padding: 10px; border-bottom: 2px solid #ddd;">Materia</th>
-                    <th style="padding: 10px; border-bottom: 2px solid #ddd;">Codigo</th>
-                    <th style="padding: 10px; border-bottom: 2px solid #ddd;">Creditos</th>
-                    <th style="padding: 10px; border-bottom: 2px solid #ddd;">Nota</th>
-                    <th style="padding: 10px; border-bottom: 2px solid #ddd;">Estado</th>
+                <tr>
+                    <th>Materia</th>
+                    <th>Codigo</th>
+                    <th>Creditos</th>
+                    <th>Nota Obtenida</th>
+                    <th>Estado</th>
                 </tr>
             </thead>
             <tbody>
                 @foreach($estudiante->getMaterias() as $materia)
                     <tr>
-                        <td style="padding: 10px; border-bottom: 1px solid #ddd;">{{ $materia->getNombre() }}</td>
-                        <td style="padding: 10px; border-bottom: 1px solid #ddd;">{{ $materia->getCodigo() }}</td>
-                        <td style="padding: 10px; border-bottom: 1px solid #ddd;">{{ $materia->getCreditos() }}</td>
-                        <td style="padding: 10px; border-bottom: 1px solid #ddd; font-weight: bold;">
-                            {{ $materia->getNotaObtenida() }}
-                        </td>
-                        <td style="padding: 10px; border-bottom: 1px solid #ddd; font-weight: bold; color: {{ $materia->estaAprobada() ? 'green' : 'red' }}">
-                            {{ $materia->getEstado() }}
+                        <td>{{ $materia->getNombre() }}</td>
+                        <td>{{ $materia->getCodigo() }}</td>
+                        <td>{{ $materia->getCreditos() }}</td>
+                        <td><strong>{{ $materia->getNotaObtenida() }}</strong></td>
+                        <td>
+                            <span class="badge-nota {{ $materia->estaAprobada() ? 'aprobado' : 'reprobado' }}">
+                                {{ $materia->getEstado() }}
+                            </span>
                         </td>
                     </tr>
                 @endforeach
             </tbody>
         </table>
 
-        <p style="margin-top: 30px;">
-            <a href="{{ route('estudiantes.index') }}" style="color: #1a3c5e; text-decoration: none; font-weight: bold;">← Volver al listado</a>
-        </p>
+        <div style="margin-top: 30px;">
+            <a href="{{ route('estudiantes.index') }}" class="btn">← Volver al listado</a>
+        </div>
     </div>
 @endsection
