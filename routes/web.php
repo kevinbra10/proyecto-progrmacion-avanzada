@@ -31,3 +31,21 @@ Route::get('/productos', [ProductoController::class, 'productos'])->name('produc
 Route::get('/estudiantes', [EstudianteController::class, 'index'])->name('estudiantes.index');
 
 Route::get('/estudiantes/{id}', [EstudianteController::class, 'detalle'])->name('estudiantes.detalle');
+
+use Illuminate\Support\Facades\DB;
+
+Route::get('/probar-conexion', function () {
+    try {
+        // Intentamos conectarnos y pedirle a XAMPP que nos diga el nombre de la base de datos
+        $baseDatos = DB::connection()->getDatabaseName();
+        
+        return "<h1>¡Conexión Exitosa! 🎉</h1>" . 
+               "<p>Laravel se conectó correctamente a XAMPP.</p>" .
+               "<p><strong>Base de datos activa:</strong> " . $baseDatos . "</p>";
+               
+    } catch (\Exception $e) {
+        return "<h1>Error de conexión ❌</h1>" . 
+               "<p>Laravel aún no puede hablar con XAMPP.</p>" .
+               "<p><strong>Detalle del error:</strong> " . $e->getMessage() . "</p>";
+    }
+});
