@@ -13,7 +13,7 @@
         <div class="border-b md:border-b-0 md:border-r border-gray-200 pb-6 md:pb-0 md:pr-8">
             <div class="mb-6">
                 <h2 class="text-xl font-bold text-gray-800 uppercase tracking-tight">Iniciar Sesion</h2>
-                <p class="text-xs text-gray-500 mt-1">Ingresa tu correo y matricula para entrar</p>
+                <p class="text-xs text-gray-500 mt-1">Ingresa tu nombre para acceder al foro universitario</p>
             </div>
 
             <form action="{{ route('login.procesar') }}" method="POST" class="space-y-4">
@@ -21,13 +21,8 @@
                 <input type="hidden" name="accion" value="ingresar">
 
                 <div>
-                    <label class="block text-xs font-bold text-gray-700 uppercase mb-1">Correo Electronico</label>
-                    <input type="email" name="email" class="w-full p-3 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Ej. kevin@usfa.edu.bo" required>
-                </div>
-
-                <div>
-                    <label class="block text-xs font-bold text-gray-700 uppercase mb-1">Numero de Matricula</label>
-                    <input type="text" name="matricula" class="w-full p-3 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Ej. 2026-SYS" required>
+                    <label class="block text-xs font-bold text-gray-700 uppercase mb-1">Nombre Completo</label>
+                    <input type="text" name="nombre" class="w-full p-3 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Ej. Kevin Colque" required>
                 </div>
 
                 <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 rounded-lg text-sm uppercase shadow-md transition">
@@ -43,7 +38,7 @@
         <div>
             <div class="mb-6">
                 <h2 class="text-xl font-bold text-gray-800 uppercase tracking-tight">Crear Cuenta</h2>
-                <p class="text-xs text-gray-500 mt-1">Registrate e ingresa tus notas del semestre</p>
+                <p class="text-xs text-gray-500 mt-1">Registrate ingresando tu carrera y tu semestre actual</p>
             </div>
 
             <form action="{{ route('login.procesar') }}" method="POST" class="space-y-4">
@@ -56,31 +51,32 @@
                 </div>
 
                 <div>
-                    <label class="block text-xs font-bold text-gray-700 uppercase mb-1">Correo Electronico</label>
-                    <input type="email" name="email" class="w-full p-3 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Ej. kevin@usfa.edu.bo" required>
+                    <label class="block text-xs font-bold text-gray-700 uppercase mb-1">Carrera</label>
+                    <select name="carrera" class="w-full p-3 border border-gray-300 rounded-lg text-sm bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        <option value="Ingenieria de Sistemas">Ingenieria de Sistemas</option>
+                        <option value="Ingenieria Comercial">Ingenieria Comercial</option>
+                        <option value="Contaduria Publica">Contaduria Publica</option>
+                    </select>
                 </div>
 
                 <div>
-                    <label class="block text-xs font-bold text-gray-700 uppercase mb-1">Numero de Matricula</label>
-                    <input type="text" name="matricula" class="w-full p-3 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Ej. 2026-SYS" required>
-                </div>
-
-                <div class="bg-gray-50 p-3 rounded-lg border border-gray-200 space-y-3">
-                    <p class="text-xs font-bold text-gray-600 uppercase tracking-wider">Notas del Semestre:</p>
-                    
-                    <div class="flex items-center justify-between gap-4">
-                        <span class="text-xs font-medium text-gray-700 w-2/3">SIS-500 - Programacion Avanzada</span>
-                        <input type="number" name="nota_materia_1" min="0" max="100" class="w-20 p-2 border border-gray-300 rounded text-center text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Nota" required>
-                    </div>
-
-                    <div class="flex items-center justify-between gap-4">
-                        <span class="text-xs font-medium text-gray-700 w-2/3">SIS-520 - Base de Datos II</span>
-                        <input type="number" name="nota_materia_2" min="0" max="100" class="w-20 p-2 border border-gray-300 rounded text-center text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Nota" required>
-                    </div>
+                    <label class="block text-xs font-bold text-gray-700 uppercase mb-1">Semestre</label>
+                    <select name="semestre" class="w-full p-3 border border-gray-300 rounded-lg text-sm bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        <option value="1ro Semestre">1ro Semestre</option>
+                        <option value="2do Semestre">2do Semestre</option>
+                        <option value="3er Semestre">3er Semestre</option>
+                        <option value="4to Semestre">4to Semestre</option>
+                        <option value="5to Semestre">5to Semestre</option>
+                        <option value="6to Semestre">6to Semestre</option>
+                        <option value="7mo Semestre">7mo Semestre</option>
+                        <option value="8vo Semestre">8vo Semestre</option>
+                        <option value="9no Semestre">9no Semestre</option>
+                        <option value="10mo Semestre">10mo Semestre</option>
+                    </select>
                 </div>
 
                 <button type="submit" class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3 rounded-lg text-sm uppercase shadow-md transition">
-                    Registrar e Inscribir Materias
+                    Registrar e Ingresar
                 </button>
             </form>
         </div>

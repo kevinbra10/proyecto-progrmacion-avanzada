@@ -1,18 +1,35 @@
-@extends('layouts.app')
+@extends('Layouts.app')
 
 @section('content')
-    <div style="background: white; border-radius: 10px; padding: 50px; box-shadow: 0 4px 15px rgba(0,0,0,0.08); text-align: center;">
-        <h1>{{ $nombre }}</h1>
-        <p style="color: #666; margin: 0;">{{ $carrera }} &middot; {{ $semestre }}</p>
-        <span style="display: inline-block; background: #1a3c5e; color: white; padding: 8px 20px; border-radius: 20px; font-size: 13px; margin-top: 20px;">
-            SIS-500 &mdash; Programación Avanzada &middot; {{ $año }}
-        </span>
-        <p style="margin-top: 35px; color: #bbb; font-size: 12px;">Construido con Laravel &mdash; Universidad Privada San Francisco de Asís</p>
-        <a href="{{ route('foro.index') }}" class="inline-block bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-lg shadow-md transition duration-200 mt-6 text-center">
-    Ingresar al Foro Universitario
-    <a href="{{ route('foro.index') }}" class="bg-blue-600 text-white px-4 py-2 rounded text-sm font-bold shadow">
-    Volver al Foro
-</a>
-</a>
+<div class="max-w-2xl mx-auto mt-8">
+    <!-- CONTENEDOR PRINCIPAL OSCURO (Reemplaza la tarjeta blanca que rompía el diseño) -->
+    <div class="bg-gray-800 rounded-2xl shadow-2xl border border-gray-700 p-8 text-center space-y-6">
+        
+        <!-- DETALLES DE BIENVENIDA -->
+        <div class="space-y-2">
+            <h2 class="text-2xl font-black text-white uppercase tracking-tight">Kevin Colque</h2>
+            <p class="text-sm text-blue-400 font-medium">Ingeniería de Sistemas · 5to Semestre</p>
+        </div>
+
+        <!-- IDENTIFICADOR DE MATERIA -->
+        <div class="inline-block bg-gray-950 border border-gray-750 px-4 py-2 rounded-xl">
+            <span class="text-xs font-mono font-bold tracking-wider text-gray-300">SIS-500 — Programación Avanzada · 2026</span>
+        </div>
+
+        <p class="text-xs text-gray-400 max-w-sm mx-auto leading-relaxed">
+            Construido con Laravel — Universidad Privada San Francisco de Asís
+        </p>
+
+        <!-- ACCIONES COMPACTAS ALINEADAS (Arregla los botones flotantes gigantes) -->
+        <div class="pt-4 flex flex-col sm:flex-row justify-center gap-3">
+            <a href="{{ route('foro.index') }}" class="bg-blue-600 hover:bg-blue-700 text-white font-extrabold text-xs px-6 py-3 rounded-xl transition uppercase tracking-wider shadow-lg">
+                Ingresar al Foro Universitario
+            </a>
+            <a href="{{ route('sobre-mi') }}" class="bg-gray-900 hover:bg-gray-750 border border-gray-700 text-gray-300 font-extrabold text-xs px-6 py-3 rounded-xl transition uppercase tracking-wider shadow">
+                Ver Mi Perfil
+            </a>
+        </div>
+
     </div>
+</div>
 @endsection

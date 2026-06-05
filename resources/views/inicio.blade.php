@@ -1,15 +1,35 @@
-@extends('layouts.app')
+@extends('Layouts.app')
 
-@section('titulo', 'Sistema')
+@section('content')
+<div class="max-w-2xl mx-auto mt-8">
+    <!-- CONTENEDOR PRINCIPAL OSCURO (Reemplaza la tarjeta blanca que rompía el diseño) -->
+    <div class="bg-gray-800 rounded-2xl shadow-2xl border border-gray-700 p-8 text-center space-y-6">
+        
+        <!-- DETALLES DE BIENVENIDA -->
+        <div class="space-y-2">
+            <h2 class="text-2xl font-black text-white uppercase tracking-tight">Kevin Colque</h2>
+            <p class="text-sm text-blue-400 font-medium">Ingeniería de Sistemas · 5to Semestre</p>
+        </div>
 
-@section('contenido')
-    <h1>mi perfil</h1>
-    <div class="card" style="max-width: 100%;">
-        <h2>{{ $nombre }}</h2>
-        <hr style="margin: 10px 0; border: 0; border-top: 1px solid #ccc;">
-        <p style="margin-bottom: 10px;"><strong>Carrera:</strong> {{ $carrera }}</p>
-        <p style="margin-bottom: 10px;"><strong>Semestre:</strong> {{ $semestre }}</p>
-        <p style="margin-bottom: 15px;"><strong>Gestion:</strong> {{ $año }}</p>
-        <p><a class="btn" href="{{ route('materias') }}">Ver Mis Materias</a></p>
+        <!-- IDENTIFICADOR DE MATERIA -->
+        <div class="inline-block bg-gray-950 border border-gray-750 px-4 py-2 rounded-xl">
+            <span class="text-xs font-mono font-bold tracking-wider text-gray-300">SIS-500 — Programación Avanzada · 2026</span>
+        </div>
+
+        <p class="text-xs text-gray-400 max-w-sm mx-auto leading-relaxed">
+            Construido con Laravel — Universidad Privada San Francisco de Asís
+        </p>
+
+        <!-- ACCIONES COMPACTAS ALINEADAS (Arregla los botones flotantes gigantes) -->
+        <div class="pt-4 flex flex-col sm:flex-row justify-center gap-3">
+            <a href="{{ route('foro.index') }}" class="bg-blue-600 hover:bg-blue-700 text-white font-extrabold text-xs px-6 py-3 rounded-xl transition uppercase tracking-wider shadow-lg">
+                Ingresar al Foro Universitario
+            </a>
+            <a href="{{ route('sobre-mi') }}" class="bg-gray-900 hover:bg-gray-750 border border-gray-700 text-gray-300 font-extrabold text-xs px-6 py-3 rounded-xl transition uppercase tracking-wider shadow">
+                Ver Mi Perfil
+            </a>
+        </div>
+
     </div>
+</div>
 @endsection

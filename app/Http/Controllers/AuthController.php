@@ -14,86 +14,76 @@ class AuthController extends Controller
 
     public function procesarLogin(Request $request)
     {
-        $carreraExiste = DB::table('carreras')->where('id', 1)->exists();
-        if (!$carreraExiste) {
-            DB::table('carreras')->insert([
-                'id' => 1,
-                'nombre_carrera' => 'Ingenieria de Sistemas',
-                'created_at' => now(),
-                'updated_at' => now()
-            ]);
-        }
-
+        // 1. INICIAR SESION DIRECTO CON EL NOMBRE
         if ($request->accion == 'ingresar') {
             $request->validate([
-                'email' => 'required|email',
-                'matricula' => 'required'
+                'nombre' => 'required'
             ]);
 
             $estudiante = DB::table('estudiantes')
-                ->where('email', $request->email)
-                ->where('matricula', $request->matricula)
+                ->where('nombre', $request->nombre)
                 ->first();
 
             if (!$estudiante) {
-                return redirect()->back()->with('error', 'Los datos no coinciden o la cuenta no existe.');
+                return redirect()->back()->with('error', 'El nombre de usuario no existe en el sistema.');
             }
 
+            // LEEMOS LOS DATOS REALES DIRECTO DE LA BASE DE DATOS (Incluyendo el nuevo campo semestre)
             session([
                 'estudiante_id' => $estudiante->id,
                 'estudiante_nombre' => $estudiante->nombre,
-                'estudiante_matricula' => $estudiante->matricula
+                'estudiante_carrera' => 'Ingenieria de Sistemas', 
+                'estudiante_matricula' => $estudiante->matricula ?? '2026-SYS',
+                'estudiante_semestre' => $estudiante->semestre ?? '5to Semestre' // <--- Leido desde MySQL
             ]);
 
             return redirect()->route('foro.index');
         }
 
+        // 2. REGISTRAR UN ESTUDIANTE GUARDANDO SU SEMESTRE REAL
         if ($request->accion == 'registrar') {
             $request->validate([
                 'nombre' => 'required',
-                'email' => 'required|email',
-                'matricula' => 'required',
-                'nota_materia_1' => 'required|numeric|min:0|max:100',
-                'nota_materia_2' => 'required|numeric|min:0|max:100'
+                'carrera' => 'required',
+                'semestre' => 'required'
             ]);
 
-            $correoExiste = DB::table('estudiantes')->where('email', $request->email)->exists();
-            if ($correoExiste) {
-                return redirect()->back()->with('error', 'El correo ya existe.');
+            $usuarioExiste = DB::table('estudiantes')->where('nombre', $request->nombre)->exists();
+            if ($usuarioExiste) {
+                return redirect()->back()->with('error', 'Ese nombre ya se encuentra registrado.');
             }
 
-            // 1. Guardar el nuevo estudiante
-            $estudianteId = DB::table('estudiantes')->insertGetId([
+            $prefijo = ($request->carrera == 'Ingenieria de Sistemas') ? 'SYS' : 'U';
+            $matriculaGenerada = '2026-' . $prefijo;
+            $emailLimpio = strtolower(str_replace(' ', '', $request->nombre)) . '@usfa.edu.bo';
+
+            $carreraExiste = DB::table('carreras')->where('id', 1)->exists();
+            if (!$carreraExiste) {
+                DB::table('carreras')->insert([
+                    'id' => 1,
+                    'nombre_carrera' => 'Ingenieria de Sistemas',
+                    'created_at' => now(),
+                    'updated_at' => now()
+                ]);
+            }
+
+            // GUARDAMOS EL REGISTRO FISICO EN XAMPP CON LA NUEVA COLUMNA SEMESTRE
+            $id = DB::table('estudiantes')->insertGetId([
                 'nombre' => $request->nombre,
-                'email' => $request->email,
-                'matricula' => $request->matricula,
+                'email' => $emailLimpio,
+                'matricula' => $matriculaGenerada,
+                'semestre' => $request->semestre, // <--- Guardado fisico real en la BD
                 'carrera_id' => 1, 
                 'created_at' => now(),
                 'updated_at' => now()
             ]);
 
-            // 2. Guardar la Primera Materia (ID 1)
-            DB::table('estudiante_materia')->insert([
-                'estudiante_id' => $estudianteId,
-                'materia_id' => 1,
-                'nota' => $request->nota_materia_1,
-                'created_at' => now(),
-                'updated_at' => now()
-            ]);
-
-            // 3. Guardar la Segunda Materia (ID 2)
-            DB::table('estudiante_materia')->insert([
-                'estudiante_id' => $estudianteId,
-                'materia_id' => 2,
-                'nota' => $request->nota_materia_2,
-                'created_at' => now(),
-                'updated_at' => now()
-            ]);
-
             session([
-                'estudiante_id' => $estudianteId,
+                'estudiante_id' => $id,
                 'estudiante_nombre' => $request->nombre,
-                'estudiante_matricula' => $request->matricula
+                'estudiante_carrera' => $request->carrera,
+                'estudiante_matricula' => $matriculaGenerada,
+                'estudiante_semestre' => $request->semestre
             ]);
 
             return redirect()->route('foro.index');

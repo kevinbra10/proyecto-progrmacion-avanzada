@@ -3,115 +3,130 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Intranet - Foro Universitario</title>
+    <title>Reddit USFA - Foro Universitario</title>
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="bg-gray-100 text-gray-800 font-sans">
 
-    <nav class="bg-blue-800 text-white p-4 shadow-md">
+    <nav class="bg-blue-800 text-white p-4 shadow-md sticky top-0 z-50">
         <div class="container mx-auto flex justify-between items-center">
             <h1 class="text-xl font-bold tracking-wide">🏛️ PORTAL INTRANET UNIVERSITARIO</h1>
-            <div class="flex items-center space-x-4">
-                <a href="{{ route('login.index') }}" class="text-sm bg-blue-700 hover:bg-blue-600 px-4 py-2 rounded font-medium shadow">Cerrar Sesion</a>
-            </div>
+            <a href="{{ route('login.index') }}" class="text-sm bg-blue-700 hover:bg-blue-600 px-4 py-2 rounded font-medium shadow">Cerrar Sesion</a>
         </div>
     </nav>
 
+    <!-- BARRA DE BÚSQUEDA AVANZADA (TIPO REDDIT) -->
+    <div class="bg-white border-b p-4 shadow-sm">
+        <form action="{{ route('foro.index') }}" method="GET" class="container mx-auto max-w-6xl flex gap-2">
+            <input type="text" name="buscar" value="{{ request('buscar') }}" placeholder="🔍 Buscar publicaciones, categorías o compañeros..." class="w-full p-3 border rounded-lg text-sm bg-gray-50 focus:ring-2 focus:ring-blue-500 outline-none">
+            <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg text-sm font-bold shadow">Buscar</button>
+            @if(request('buscar') || request('categoria'))
+                <a href="{{ route('foro.index') }}" class="bg-gray-200 text-gray-700 px-4 py-3 rounded-lg text-sm font-medium flex items-center">Limpiar</a>
+            @endif
+        </form>
+    </div>
+
     <div class="container mx-auto max-w-6xl mt-6 px-4 grid grid-cols-1 md:grid-cols-4 gap-6">
         
-        <div class="md:col-span-1 bg-white p-5 rounded-lg shadow border-t-4 border-blue-600 h-fit">
-            <div class="text-center mb-4">
-                <div class="w-20 h-20 bg-blue-100 text-blue-600 rounded-full mx-auto flex items-center justify-center text-2xl font-bold mb-2">
-                    U
-                </div>
-                <h3 class="font-bold text-gray-900">{{ session('estudiante_nombre', 'Estudiante') }}</h3>
-                <p class="text-xs text-gray-500">Ingenieria de Sistemas</p>
+        <!-- SIDEBAR IZQUIERDO -->
+        <div class="md:col-span-1 bg-white p-5 rounded-lg shadow h-fit space-y-4">
+            <div class="text-center">
+                <div class="w-16 h-16 bg-blue-100 text-blue-600 rounded-full mx-auto flex items-center justify-center text-xl font-bold mb-2">U</div>
+                <h3 class="font-bold text-gray-900 text-sm">{{ session('estudiante_nombre') }}</h3>
+                <p class="text-xs text-blue-600 font-semibold">{{ session('estudiante_carrera') }}</p>
+                <p class="text-xs text-gray-400 mt-1">{{ session('estudiante_semestre') }}</p>
             </div>
-            <hr class="my-3">
-            <div class="space-y-2 text-sm text-gray-600 mb-4">
-                <p><strong>Matricula:</strong> {{ session('estudiante_matricula', '2026-SYS') }}</p>
-                <p><strong>Semestre:</strong> 5to Semestre</p>
-                <p><strong>Estado:</strong> Regular</p>
-            </div>
-            <hr class="my-3">
+            <hr>
             
-            <a href="{{ route('home') }}" class="block text-center bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded text-xs uppercase shadow transition duration-200 mb-2">
-                Sobre el Creador
+            <!-- FILTROS POR CATEGORÍA -->
+            <div class="space-y-1">
+                <p class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">Categorias</p>
+                <a href="{{ route('foro.index', ['categoria' => 'General']) }}" class="block px-3 py-2 rounded text-sm {{ request('categoria') == 'General' ? 'bg-blue-100 text-blue-700 font-bold' : 'hover:bg-gray-100' }}">🌐 General</a>
+                <a href="{{ route('foro.index', ['categoria' => 'Tareas / Dudas']) }}" class="block px-3 py-2 rounded text-sm {{ request('categoria') == 'Tareas / Dudas' ? 'bg-blue-100 text-blue-700 font-bold' : 'hover:bg-gray-100' }}">📝 Tareas / Dudas</a>
+                <a href="{{ route('foro.index', ['categoria' => 'Avisos']) }}" class="block px-3 py-2 rounded text-sm {{ request('categoria') == 'Avisos' ? 'bg-blue-100 text-blue-700 font-bold' : 'hover:bg-gray-100' }}">📢 Avisos</a>
+            </div>
+            <hr>
+
+            <!-- SECCIONES EXCLUSIVAS -->
+            <a href="{{ route('foro.mis_posts') }}" class="block text-center bg-gray-800 hover:bg-gray-900 text-white font-bold py-2 rounded text-xs uppercase shadow transition">
+                📂 Mis Publicaciones
             </a>
-            <a href="{{ route('estudiantes.index') }}" class="block text-center bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded text-xs uppercase shadow transition duration-200">
-             Ver Notas (POO)
-            </a>
+            <a href="{{ route('home') }}" class="block text-center bg-green-600 hover:bg-green-700 text-white font-bold py-2 rounded text-xs uppercase shadow transition">
+                    👨‍💻 Sobre el Creador
+                </a>
+            
         </div>
 
-        <div class="md:col-span-3">
+        <!-- CONTENIDO DEL MURO -->
+        <div class="md:col-span-3 space-y-4">
             
-            <!-- ALERTAS DINAMICAS -->
             @if(session('mensaje'))
-                <div class="bg-green-100 border-l-4 border-green-500 text-green-700 p-4 rounded mb-4 text-sm font-medium shadow-sm">
-                    {{ session('mensaje') }}
-                </div>
+                <div class="bg-green-100 border-l-4 border-green-500 text-green-700 p-4 rounded text-sm shadow-sm">{{ session('mensaje') }}</div>
             @endif
-
             @if(session('eliminar'))
-                <div class="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 rounded mb-4 text-sm font-medium shadow-sm">
-                    {{ session('eliminar') }}
-                </div>
+                <div class="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 rounded text-sm shadow-sm">{{ session('eliminar') }}</div>
             @endif
             
-            <div class="bg-white p-6 rounded-lg shadow mb-6">
-                <h2 class="text-base font-bold mb-3 text-gray-800">Nueva publicacion en la comunidad</h2>
-                
-                <form action="{{ route('foro.guardar') }}" method="POST">
+            <!-- CREAR POST -->
+            <div class="bg-white p-6 rounded-lg shadow">
+                <form action="{{ route('foro.guardar') }}" method="POST" class="space-y-3">
                     @csrf
-                    <textarea name="contenido" class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm" rows="3" placeholder="Escribe un anuncio, duda o aviso para la carrera..." required></textarea>
-                    
-                    <div class="flex justify-between items-center mt-3">
-                        <select name="categoria" class="p-2 border border-gray-300 rounded-lg text-sm bg-gray-50">
+                    <textarea name="contenido" class="w-full p-3 border rounded-lg text-sm outline-none focus:ring-2 focus:ring-blue-500" rows="3" placeholder="¿Qué quieres anunciar o preguntar en la facultad...?" required></textarea>
+                    <div class="flex justify-between items-center">
+                        <select name="categoria" class="p-2 border rounded-lg text-sm bg-gray-50">
                             <option value="General">General</option>
                             <option value="Tareas / Dudas">Tareas / Dudas</option>
                             <option value="Avisos">Avisos</option>
                         </select>
-                        <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white font-medium px-5 py-2 rounded-lg text-sm transition duration-200 shadow">
-                            Publicar Contenido
-                        </button>
+                        <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white font-medium px-5 py-2 rounded-lg text-sm shadow">Publicar</button>
                     </div>
                 </form>
             </div>
 
-            <h2 class="text-lg font-bold mb-4 text-gray-700">Muro de Novedades</h2>
-
-            @if($publicaciones->isEmpty())
-                <div class="bg-white p-8 rounded-lg shadow text-center text-gray-500">
-                    <p>No hay publicaciones en el muro todavia. Inicia la conversacion!</p>
-                </div>
-            @else
-                @foreach($publicaciones as $pub)
-                    <div class="bg-white p-5 rounded-lg shadow mb-4 border-l-4 border-blue-600 flex flex-col justify-between">
+            <!-- ENUMERACIÓN DE POSTS -->
+            @foreach($publicaciones as $pub)
+                <div class="bg-white p-5 rounded-lg shadow border-l-4 border-blue-600">
+                    <div class="flex justify-between items-center mb-2">
                         <div>
-                            <div class="flex justify-between items-center mb-2">
-                                <span class="font-bold text-gray-900 text-sm">{{ $pub->estudiante_nombre ?? 'Usuario' }}</span>
-                                <span class="text-xs bg-blue-50 text-blue-700 px-2 py-1 rounded-full font-medium">{{ $pub->categoria }}</span>
-                            </div>
-                            <p class="text-gray-700 text-sm mt-1">{{ $pub->contenido }}</p>
+                            <span class="font-bold text-gray-900 text-sm">{{ $pub->estudiante_nombre }}</span>
+                            <span class="text-xs text-gray-400 block">Publicado: {{ $pub->created_at }}</span>
                         </div>
-                        
-                        <div class="flex justify-between items-center mt-4 pt-2 border-t border-gray-100">
-                            <span class="text-xs text-gray-400">Enviado: {{ $pub->created_at }}</span>
-                            
-                            <form action="{{ route('foro.eliminar', $pub->id) }}" method="POST" onsubmit="return confirm('¿Seguro que quieres eliminar esta publicacion?');">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" class="text-red-500 hover:text-red-700 text-xs font-semibold uppercase tracking-wider">
-                                    Eliminar
-                                </button>
-                            </form>
-                        </div>
+                        <span class="text-xs bg-blue-50 text-blue-700 px-3 py-1 rounded-full font-bold">{{ $pub->categoria }}</span>
                     </div>
-                @endforeach
-            @endif
+                    <p class="text-gray-700 text-sm mt-2 font-medium">{{ $pub->contenido }}</p>
+
+                    <!-- BOTÓN ELIMINAR (SOLO PARA EL DUEÑO) -->
+                    <div class="flex justify-end mt-2">
+                        @if($pub->estudiante_id == session('estudiante_id'))
+                            <form action="{{ route('foro.eliminar', $pub->id) }}" method="POST" onsubmit="return confirm('¿Seguro de borrar tu publicacion?');">
+                                @csrf @method('DELETE')
+                                <button type="submit" class="text-red-500 hover:text-red-700 text-xs font-bold uppercase">Eliminar</button>
+                            </form>
+                        @endif
+                    </div>
+
+                    <!-- CAJA DE RESPUESTAS HILADAS (TIPO REDDIT) -->
+                    <div class="mt-4 bg-gray-50 p-3 rounded-lg border space-y-3">
+                        <p class="text-xs font-bold text-gray-500 uppercase tracking-wider">Respuestas del Hilo:</p>
+                        
+                        @foreach($pub->respuestas as $resp)
+                            <div class="border-l-2 border-gray-300 pl-3 py-1 text-xs">
+                                <strong class="text-gray-800">{{ $resp->estudiante_nombre }}:</strong>
+                                <span class="text-gray-600">{{ $resp->contenido }}</span>
+                            </div>
+                        @endforeach
+
+                        <!-- FORMULARIO PARA RESPONDER -->
+                        <form action="{{ route('foro.responder', $pub->id) }}" method="POST" class="flex gap-2 mt-2">
+                            @csrf
+                            <input type="text" name="contenido" placeholder="Escribe una respuesta publica..." class="w-full p-2 border rounded text-xs bg-white focus:outline-none focus:ring-1 focus:ring-blue-500" required>
+                            <button type="submit" class="bg-gray-800 hover:bg-gray-900 text-white px-3 py-2 rounded text-xs font-bold">Responder</button>
+                        </form>
+                    </div>
+                </div>
+            @endforeach
 
         </div>
     </div>
-
 </body>
 </html>

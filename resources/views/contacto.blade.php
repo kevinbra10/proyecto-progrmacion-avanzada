@@ -1,45 +1,31 @@
-@extends('layouts.app')
+@extends('Layouts.app')
 
 @section('content')
-    <div class="tarjeta" style="max-width: 600px; margin: 0 auto;">
-        <h1>Formulario de Contacto</h1>
-        <p>Introduce tus datos para realizar el procesamiento de la informacion mediante metodo POST.</p>
-
-        @if(session('exito'))
-            <div class="alerta-exito">
-                {{ session('exito') }}
+<div class="max-w-xl mx-auto mt-4">
+    <section class="bg-gray-800 p-6 rounded-xl shadow-xl border border-gray-700 space-y-4">
+        <h3 class="text-lg font-bold uppercase tracking-wide text-blue-400">✉️ Contacto</h3>
+        
+        <form action="{{ route('contacto.procesar') }}" method="POST" class="space-y-4 text-sm">
+            @csrf
+            <div>
+                <label for="nombre" class="block font-semibold mb-1 text-gray-300">Nombre completo:</label>
+                <input type="text" id="nombre" name="nombre" class="w-full p-3 bg-gray-900 border border-gray-700 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Tu nombre" required>
             </div>
-        @endif
-
-        @if($errors->any())
-            <div class="alerta-error">
-                <ul>
-                    @foreach($errors->all() as $error)
-                        <li>{{ $error }}</li>
-                    @endforeach
-                </ul>
+            
+            <div>
+                <label for="email" class="block font-semibold mb-1 text-gray-300">Correo electrónico:</label>
+                <input type="email" id="email" name="email" class="w-full p-3 bg-gray-900 border border-gray-700 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="tu@correo.com" required>
             </div>
-        @endif
-
-        <form action="{{ route('contacto.procesar') }}" method="POST">
-            @csrf 
-
-            <div class="form-grupo">
-                <label class="form-label">Nombre Completo</label>
-                <input type="text" name="nombre" class="form-control" value="{{ old('nombre') }}" placeholder="Ej. Juan Perez">
+            
+            <div>
+                <label for="mensaje" class="block font-semibold mb-1 text-gray-300">Mensaje:</label>
+                <textarea id="mensaje" name="mensaje" rows="4" class="w-full p-3 bg-gray-900 border border-gray-700 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Escribe tu mensaje aquí..." required></textarea>
             </div>
-
-            <div class="form-grupo">
-                <label class="form-label">Correo Electronico</label>
-                <input type="email" name="email" class="form-control" value="{{ old('email') }}" placeholder="juan@correo.com">
-            </div>
-
-            <div class="form-grupo">
-                <label class="form-label">Mensaje o Motivo</label>
-                <textarea name="mensaje" class="form-control" rows="4" placeholder="Escribe tu mensaje aqui...">{{ old('mensaje') }}</textarea>
-            </div>
-
-            <button type="submit" class="btn" style="width: 100%;">Enviar Formulario</button>
+            
+            <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 rounded-lg uppercase tracking-wider shadow-md transition">
+                Enviar Mensaje
+            </button>
         </form>
-    </div>
+    </section>
+</div>
 @endsection
