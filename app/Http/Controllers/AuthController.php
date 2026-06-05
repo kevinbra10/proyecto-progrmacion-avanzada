@@ -14,7 +14,6 @@ class AuthController extends Controller
 
     public function procesarLogin(Request $request)
     {
-
         $carreraExiste = DB::table('carreras')->where('id', 1)->exists();
         if (!$carreraExiste) {
             DB::table('carreras')->insert([
@@ -24,7 +23,6 @@ class AuthController extends Controller
                 'updated_at' => now()
             ]);
         }
-
 
         if ($request->accion == 'ingresar') {
             $request->validate([
@@ -50,20 +48,22 @@ class AuthController extends Controller
             return redirect()->route('foro.index');
         }
 
-     
         if ($request->accion == 'registrar') {
             $request->validate([
                 'nombre' => 'required',
                 'email' => 'required|email',
-                'matricula' => 'required'
+                'matricula' => 'required',
+                'nota_materia_1' => 'required|numeric|min:0|max:100',
+                'nota_materia_2' => 'required|numeric|min:0|max:100'
             ]);
 
             $correoExiste = DB::table('estudiantes')->where('email', $request->email)->exists();
             if ($correoExiste) {
-                return redirect()->back()->with('error', 'El correo ya esta registrado. Intenta iniciar sesion.');
+                return redirect()->back()->with('error', 'El correo ya existe.');
             }
 
-            $id = DB::table('estudiantes')->insertGetId([
+            // 1. Guardar el nuevo estudiante
+            $estudianteId = DB::table('estudiantes')->insertGetId([
                 'nombre' => $request->nombre,
                 'email' => $request->email,
                 'matricula' => $request->matricula,
@@ -72,8 +72,26 @@ class AuthController extends Controller
                 'updated_at' => now()
             ]);
 
+            // 2. Guardar la Primera Materia (ID 1)
+            DB::table('estudiante_materia')->insert([
+                'estudiante_id' => $estudianteId,
+                'materia_id' => 1,
+                'nota' => $request->nota_materia_1,
+                'created_at' => now(),
+                'updated_at' => now()
+            ]);
+
+            // 3. Guardar la Segunda Materia (ID 2)
+            DB::table('estudiante_materia')->insert([
+                'estudiante_id' => $estudianteId,
+                'materia_id' => 2,
+                'nota' => $request->nota_materia_2,
+                'created_at' => now(),
+                'updated_at' => now()
+            ]);
+
             session([
-                'estudiante_id' => $id,
+                'estudiante_id' => $estudianteId,
                 'estudiante_nombre' => $request->nombre,
                 'estudiante_matricula' => $request->matricula
             ]);

@@ -11,7 +11,9 @@
     <nav class="bg-blue-800 text-white p-4 shadow-md">
         <div class="container mx-auto flex justify-between items-center">
             <h1 class="text-xl font-bold tracking-wide">🏛️ PORTAL INTRANET UNIVERSITARIO</h1>
-            <a href="{{ route('login.index') }}" class="text-sm bg-blue-700 hover:bg-blue-600 px-4 py-2 rounded font-medium shadow">Cerrar Sesion</a>
+            <div class="flex items-center space-x-4">
+                <a href="{{ route('login.index') }}" class="text-sm bg-blue-700 hover:bg-blue-600 px-4 py-2 rounded font-medium shadow">Cerrar Sesion</a>
+            </div>
         </div>
     </nav>
 
@@ -33,12 +35,28 @@
             </div>
             <hr class="my-3">
             
-            <a href="{{ route('home') }}" class="block text-center bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded text-xs uppercase shadow transition duration-200">
+            <a href="{{ route('home') }}" class="block text-center bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded text-xs uppercase shadow transition duration-200 mb-2">
                 Sobre el Creador
+            </a>
+            <a href="{{ route('estudiantes.index') }}" class="block text-center bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded text-xs uppercase shadow transition duration-200">
+             Ver Notas (POO)
             </a>
         </div>
 
         <div class="md:col-span-3">
+            
+            <!-- ALERTAS DINAMICAS -->
+            @if(session('mensaje'))
+                <div class="bg-green-100 border-l-4 border-green-500 text-green-700 p-4 rounded mb-4 text-sm font-medium shadow-sm">
+                    {{ session('mensaje') }}
+                </div>
+            @endif
+
+            @if(session('eliminar'))
+                <div class="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 rounded mb-4 text-sm font-medium shadow-sm">
+                    {{ session('eliminar') }}
+                </div>
+            @endif
             
             <div class="bg-white p-6 rounded-lg shadow mb-6">
                 <h2 class="text-base font-bold mb-3 text-gray-800">Nueva publicacion en la comunidad</h2>
@@ -68,14 +86,25 @@
                 </div>
             @else
                 @foreach($publicaciones as $pub)
-                    <div class="bg-white p-5 rounded-lg shadow mb-4 border-l-4 border-blue-600">
-                        <div class="flex justify-between items-center mb-2">
-                            <span class="font-bold text-gray-900 text-sm">{{ $pub->estudiante_nombre ?? 'Usuario' }}</span>
-                            <span class="text-xs bg-blue-50 text-blue-700 px-2 py-1 rounded-full font-medium">{{ $pub->categoria }}</span>
+                    <div class="bg-white p-5 rounded-lg shadow mb-4 border-l-4 border-blue-600 flex flex-col justify-between">
+                        <div>
+                            <div class="flex justify-between items-center mb-2">
+                                <span class="font-bold text-gray-900 text-sm">{{ $pub->estudiante_nombre ?? 'Usuario' }}</span>
+                                <span class="text-xs bg-blue-50 text-blue-700 px-2 py-1 rounded-full font-medium">{{ $pub->categoria }}</span>
+                            </div>
+                            <p class="text-gray-700 text-sm mt-1">{{ $pub->contenido }}</p>
                         </div>
-                        <p class="text-gray-700 text-sm mt-1">{{ $pub->contenido }}</p>
-                        <div class="text-right mt-3 text-xs text-gray-400">
-                            Enviado: {{ $pub->created_at }}
+                        
+                        <div class="flex justify-between items-center mt-4 pt-2 border-t border-gray-100">
+                            <span class="text-xs text-gray-400">Enviado: {{ $pub->created_at }}</span>
+                            
+                            <form action="{{ route('foro.eliminar', $pub->id) }}" method="POST" onsubmit="return confirm('¿Seguro que quieres eliminar esta publicacion?');">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="text-red-500 hover:text-red-700 text-xs font-semibold uppercase tracking-wider">
+                                    Eliminar
+                                </button>
+                            </form>
                         </div>
                     </div>
                 @endforeach

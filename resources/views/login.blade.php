@@ -10,11 +10,10 @@
 
     <div class="container mx-auto max-w-4xl grid grid-cols-1 md:grid-cols-2 gap-8 bg-white p-8 rounded-xl shadow-2xl">
         
-        <!-- COLUMNA 1: INICIAR SESION -->
         <div class="border-b md:border-b-0 md:border-r border-gray-200 pb-6 md:pb-0 md:pr-8">
             <div class="mb-6">
                 <h2 class="text-xl font-bold text-gray-800 uppercase tracking-tight">Iniciar Sesion</h2>
-                <p class="text-xs text-gray-500 mt-1">Si ya tienes cuenta, ingresa tu correo y matricula</p>
+                <p class="text-xs text-gray-500 mt-1">Ingresa tu correo y matricula para entrar</p>
             </div>
 
             <form action="{{ route('login.procesar') }}" method="POST" class="space-y-4">
@@ -41,11 +40,10 @@
             @endif
         </div>
 
-        <!-- COLUMNA 2: CREAR NUEVA CUENTA -->
         <div>
             <div class="mb-6">
                 <h2 class="text-xl font-bold text-gray-800 uppercase tracking-tight">Crear Cuenta</h2>
-                <p class="text-xs text-gray-500 mt-1">Registrate por primera vez en la plataforma</p>
+                <p class="text-xs text-gray-500 mt-1">Registrate e ingresa tus notas del semestre</p>
             </div>
 
             <form action="{{ route('login.procesar') }}" method="POST" class="space-y-4">
@@ -67,14 +65,24 @@
                     <input type="text" name="matricula" class="w-full p-3 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Ej. 2026-SYS" required>
                 </div>
 
+                <div class="bg-gray-50 p-3 rounded-lg border border-gray-200 space-y-3">
+                    <p class="text-xs font-bold text-gray-600 uppercase tracking-wider">Notas del Semestre:</p>
+                    
+                    <div class="flex items-center justify-between gap-4">
+                        <span class="text-xs font-medium text-gray-700 w-2/3">SIS-500 - Programacion Avanzada</span>
+                        <input type="number" name="nota_materia_1" min="0" max="100" class="w-20 p-2 border border-gray-300 rounded text-center text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Nota" required>
+                    </div>
+
+                    <div class="flex items-center justify-between gap-4">
+                        <span class="text-xs font-medium text-gray-700 w-2/3">SIS-520 - Base de Datos II</span>
+                        <input type="number" name="nota_materia_2" min="0" max="100" class="w-20 p-2 border border-gray-300 rounded text-center text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Nota" required>
+                    </div>
+                </div>
+
                 <button type="submit" class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3 rounded-lg text-sm uppercase shadow-md transition">
-                    Registrar e Ingresar
+                    Registrar e Inscribir Materias
                 </button>
             </form>
-            
-            @if(session('exito'))
-                <p class="text-green-600 text-xs font-bold mt-3 text-center">{{ session('exito') }}</p>
-            @endif
         </div>
 
     </div>

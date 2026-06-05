@@ -25,3 +25,4 @@ Route::get('/productos', [ProductoController::class, 'productos'])->name('produc
 
 Route::get('/estudiantes', [EstudianteController::class, 'index'])->name('estudiantes.index');
 Route::get('/estudiantes/{id}', [EstudianteController::class, 'detalle'])->name('estudiantes.detalle');
+Route::delete('/foro/{id}', [PublicacionController::class, 'eliminar'])->name('foro.eliminar');

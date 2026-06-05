@@ -35,6 +35,12 @@ class PublicacionController extends Controller
             'updated_at' => now()
         ]);
 
-        return redirect()->route('foro.index');
+        return redirect()->route('foro.index')->with('mensaje', '¡Publicacion compartida con exito al muro!');
+    }
+
+    public function eliminar($id)
+    {
+        DB::table('publicaciones')->where('id', $id)->delete();
+        return redirect()->route('foro.index')->with('eliminar', 'La publicacion fue eliminada correctamente.');
     }
 }
