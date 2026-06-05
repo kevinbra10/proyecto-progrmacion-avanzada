@@ -10,7 +10,7 @@
 
     <nav class="bg-gray-900 text-white p-4 shadow-md mb-6">
         <div class="container mx-auto flex justify-between items-center max-w-4xl">
-            <h1 class="text-lg font-bold">📂 REVISIÓN DE MIS ENTRADAS</h1>
+            <h1 class="text-lg font-bold">REVISIÓN DE MIS ENTRADAS</h1>
             <a href="{{ route('foro.index') }}" class="text-xs bg-gray-700 hover:bg-gray-600 px-4 py-2 rounded font-bold uppercase">Volver al Muro</a>
         </div>
     </nav>

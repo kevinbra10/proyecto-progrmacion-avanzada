@@ -3,7 +3,7 @@
 @section('content')
 <div class="mt-4">
     <section class="bg-gray-800 p-6 rounded-xl shadow-xl border border-gray-700 space-y-4">
-        <h3 class="text-lg font-bold uppercase tracking-wide text-blue-400">📚 Mis Materias</h3>
+        <h3 class="text-lg font-bold uppercase tracking-wide text-blue-400"> Mis Materias</h3>
         
         <div class="overflow-x-auto rounded-lg border border-gray-700">
             <table class="w-full text-left border-collapse text-sm">

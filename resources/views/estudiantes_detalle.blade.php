@@ -3,12 +3,12 @@
 @section('content')
 <div class="max-w-4xl mx-auto mt-4 space-y-6">
     
-    <!-- REGRESAR -->
+
     <a href="{{ route('estudiantes.index') }}" class="inline-flex items-center text-xs font-bold uppercase text-gray-400 hover:text-white transition gap-1">
         ← Volver al listado
     </a>
 
-    <!-- FICHA MAESTRA DEL ALUMNO -->
+
     <div class="bg-gray-800 rounded-xl shadow-2xl border border-gray-700 overflow-hidden">
         <div class="bg-gradient-to-r from-gray-800 to-slate-900 p-6 border-b border-gray-700 sm:flex sm:justify-between sm:items-center">
             <div class="space-y-1">
@@ -21,7 +21,6 @@
             </div>
         </div>
 
-        <!-- DETALLES TÉCNICOS -->
         <div class="p-6 grid grid-cols-1 sm:grid-cols-3 gap-4 text-xs bg-gray-900/30">
             <div class="bg-gray-900 p-3 rounded-lg border border-gray-750">
                 <span class="block text-gray-500 font-bold uppercase">Matrícula</span>
@@ -37,7 +36,7 @@
             </div>
         </div>
 
-        <!-- TABLA DE MATERIAS INSCRITAS -->
+        
         <div class="p-6 space-y-3">
             <h3 class="text-sm font-bold uppercase tracking-wide text-gray-300">Materias Inscritas</h3>
             

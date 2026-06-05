@@ -14,7 +14,7 @@ class AuthController extends Controller
 
     public function procesarLogin(Request $request)
     {
-        // 1. INICIAR SESION DIRECTO CON EL NOMBRE
+
         if ($request->accion == 'ingresar') {
             $request->validate([
                 'nombre' => 'required'
@@ -28,19 +28,19 @@ class AuthController extends Controller
                 return redirect()->back()->with('error', 'El nombre de usuario no existe en el sistema.');
             }
 
-            // LEEMOS LOS DATOS REALES DIRECTO DE LA BASE DE DATOS (Incluyendo el nuevo campo semestre)
+
             session([
                 'estudiante_id' => $estudiante->id,
                 'estudiante_nombre' => $estudiante->nombre,
                 'estudiante_carrera' => 'Ingenieria de Sistemas', 
                 'estudiante_matricula' => $estudiante->matricula ?? '2026-SYS',
-                'estudiante_semestre' => $estudiante->semestre ?? '5to Semestre' // <--- Leido desde MySQL
+                'estudiante_semestre' => $estudiante->semestre ?? '5to Semestre'
             ]);
 
             return redirect()->route('foro.index');
         }
 
-        // 2. REGISTRAR UN ESTUDIANTE GUARDANDO SU SEMESTRE REAL
+   
         if ($request->accion == 'registrar') {
             $request->validate([
                 'nombre' => 'required',
@@ -67,12 +67,12 @@ class AuthController extends Controller
                 ]);
             }
 
-            // GUARDAMOS EL REGISTRO FISICO EN XAMPP CON LA NUEVA COLUMNA SEMESTRE
+  
             $id = DB::table('estudiantes')->insertGetId([
                 'nombre' => $request->nombre,
                 'email' => $emailLimpio,
                 'matricula' => $matriculaGenerada,
-                'semestre' => $request->semestre, // <--- Guardado fisico real en la BD
+                'semestre' => $request->semestre, 
                 'carrera_id' => 1, 
                 'created_at' => now(),
                 'updated_at' => now()

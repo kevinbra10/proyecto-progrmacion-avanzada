@@ -10,7 +10,7 @@
 
     <nav class="bg-gray-800 text-white p-4 shadow-lg sticky top-0 z-50 border-b border-gray-700">
         <div class="container mx-auto flex justify-between items-center max-w-5xl">
-            <h1 class="text-md font-bold tracking-wider uppercase text-blue-400">🏛️ Portal USFA</h1>
+            <h1 class="text-md font-bold tracking-wider uppercase text-blue-400"> Portal USFA</h1>
             
             <div class="flex gap-4 text-xs font-semibold uppercase items-center">
                 <a href="{{ route('home') }}" class="hover:text-blue-400 transition {{ Route::is('home') ? 'text-blue-400 font-bold' : '' }}">Inicio</a>

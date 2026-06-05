@@ -10,7 +10,7 @@
 
     <nav class="bg-blue-800 text-white p-4 shadow-md sticky top-0 z-50">
         <div class="container mx-auto flex justify-between items-center">
-            <h1 class="text-xl font-bold tracking-wide">🏛️ PORTAL INTRANET UNIVERSITARIO</h1>
+            <h1 class="text-xl font-bold tracking-wide"> Foro Universitario</h1>
             <a href="{{ route('login.index') }}" class="text-sm bg-blue-700 hover:bg-blue-600 px-4 py-2 rounded font-medium shadow">Cerrar Sesion</a>
         </div>
     </nav>
@@ -38,7 +38,7 @@
             </div>
             <hr>
             
-            <!-- FILTROS POR CATEGORÍA -->
+ 
             <div class="space-y-1">
                 <p class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">Categorias</p>
                 <a href="{{ route('foro.index', ['categoria' => 'General']) }}" class="block px-3 py-2 rounded text-sm {{ request('categoria') == 'General' ? 'bg-blue-100 text-blue-700 font-bold' : 'hover:bg-gray-100' }}">🌐 General</a>
@@ -47,17 +47,17 @@
             </div>
             <hr>
 
-            <!-- SECCIONES EXCLUSIVAS -->
+
             <a href="{{ route('foro.mis_posts') }}" class="block text-center bg-gray-800 hover:bg-gray-900 text-white font-bold py-2 rounded text-xs uppercase shadow transition">
-                📂 Mis Publicaciones
+                 Mis Publicaciones
             </a>
             <a href="{{ route('home') }}" class="block text-center bg-green-600 hover:bg-green-700 text-white font-bold py-2 rounded text-xs uppercase shadow transition">
-                    👨‍💻 Sobre el Creador
+                     Sobre el Creador
                 </a>
             
         </div>
 
-        <!-- CONTENIDO DEL MURO -->
+
         <div class="md:col-span-3 space-y-4">
             
             @if(session('mensaje'))

@@ -3,7 +3,7 @@
 @section('content')
 <div class="max-w-xl mx-auto mt-4">
     <section class="bg-gray-800 p-6 rounded-xl shadow-xl border border-gray-700 space-y-4">
-        <h3 class="text-lg font-bold uppercase tracking-wide text-blue-400">✉️ Contacto</h3>
+        <h3 class="text-lg font-bold uppercase tracking-wide text-blue-400"> Contacto</h3>
         
         <form action="{{ route('contacto.procesar') }}" method="POST" class="space-y-4 text-sm">
             @csrf

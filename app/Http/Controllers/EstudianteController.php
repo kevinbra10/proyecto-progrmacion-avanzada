@@ -8,23 +8,23 @@ use App\Clases\Materia;
 
 class EstudianteController extends Controller 
 {
-    // 1. LISTA GENERAL DE ESTUDIANTES
+   
     public function index() 
     {
         $titulo = "Lista de Estudiantes";
         $estudiantes = $this->obtenerEstudiantes();
 
-        // Llamamos a la vista nativa de Laravel pasándole los datos dinámicos
+        
         return view('estudiantes', compact('estudiantes', 'titulo'));
     }
 
-    // 2. DETALLE DE UN ESTUDIANTE ESPECÍFICO (Se pasa el ID por la URL de Laravel)
+
     public function detalle($id) 
     {
         $todos = $this->obtenerEstudiantes();
         $id = (int)$id;
 
-        // Validación de existencia de ID al estilo Laravel
+       
         if (!isset($todos[$id])) {
             abort(404, "Estudiante no encontrado");
         }
@@ -32,11 +32,11 @@ class EstudianteController extends Controller
         $titulo = "Detalle del Estudiante";
         $estudiante = $todos[$id]; 
 
-        // Retornamos la vista de detalle pasándole el objeto estudiante y su ID
+     
         return view('estudiantes_detalle', compact('estudiante', 'titulo', 'id'));
     }
 
-    // 3. TU MATRIZ DE DATOS EN POO
+   
     private function obtenerEstudiantes(): array 
     {
         $e1 = new Estudiante("Mario Bros", "mario@star.com", "Ingenieria de Sistemas", "123");

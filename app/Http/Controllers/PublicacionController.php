@@ -9,13 +9,12 @@ class PublicacionController extends Controller
 {
     public function index(Request $request)
     {
-        // Construimos la consulta base de publicaciones con buscadores
         $query = DB::table('publicaciones')
             ->leftJoin('estudiantes', 'publicaciones.estudiante_id', '=', 'estudiantes.id')
             ->select('publicaciones.*', 'estudiantes.nombre as estudiante_nombre')
             ->orderBy('publicaciones.created_at', 'desc');
 
-        // BUSCADOR AVANZADO: Si el usuario escribe algo en la barra de busqueda
+    
         if ($request->has('buscar') && $request->buscar != '') {
             $buscar = $request->buscar;
             $query->where(function($q) use ($buscar) {
@@ -25,14 +24,13 @@ class PublicacionController extends Controller
             });
         }
 
-        // FILTRO POR CATEGORIAS: General, Tareas / Dudas, Avisos
         if ($request->has('categoria') && $request->categoria != '') {
             $query->where('publicaciones.categoria', $request->categoria);
         }
 
         $publicaciones = $query->get();
 
-        // Jalar las respuestas de cada publicacion e incluir el nombre de quien respondio
+     
         foreach ($publicaciones as $pub) {
             $pub->respuestas = DB::table('respuestas')
                 ->join('estudiantes', 'respuestas.estudiante_id', '=', 'estudiantes.id')
@@ -82,7 +80,7 @@ class PublicacionController extends Controller
     {
         $publicacion = DB::table('publicaciones')->where('id', $id)->first();
 
-        // VALIDACIÓN DE SEGURIDAD: Solo el creador puede eliminar
+       
         if ($publicacion->estudiante_id != session('estudiante_id')) {
             return redirect()->back()->with('eliminar', 'Error: No puedes eliminar una publicación que no es tuya.');
         }
@@ -93,7 +91,7 @@ class PublicacionController extends Controller
 
     public function misPublicaciones()
     {
-        // Seccion donde el estudiante ve exclusivamente lo suyo
+       
         $publicaciones = DB::table('publicaciones')
             ->where('estudiante_id', session('estudiante_id'))
             ->orderBy('created_at', 'desc')

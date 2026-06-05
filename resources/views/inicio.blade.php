@@ -5,13 +5,13 @@
     <!-- CONTENEDOR PRINCIPAL OSCURO (Reemplaza la tarjeta blanca que rompía el diseño) -->
     <div class="bg-gray-800 rounded-2xl shadow-2xl border border-gray-700 p-8 text-center space-y-6">
         
-        <!-- DETALLES DE BIENVENIDA -->
+
         <div class="space-y-2">
             <h2 class="text-2xl font-black text-white uppercase tracking-tight">Kevin Colque</h2>
             <p class="text-sm text-blue-400 font-medium">Ingeniería de Sistemas · 5to Semestre</p>
         </div>
 
-        <!-- IDENTIFICADOR DE MATERIA -->
+
         <div class="inline-block bg-gray-950 border border-gray-750 px-4 py-2 rounded-xl">
             <span class="text-xs font-mono font-bold tracking-wider text-gray-300">SIS-500 — Programación Avanzada · 2026</span>
         </div>
@@ -20,7 +20,7 @@
             Construido con Laravel — Universidad Privada San Francisco de Asís
         </p>
 
-        <!-- ACCIONES COMPACTAS ALINEADAS (Arregla los botones flotantes gigantes) -->
+    
         <div class="pt-4 flex flex-col sm:flex-row justify-center gap-3">
             <a href="{{ route('foro.index') }}" class="bg-blue-600 hover:bg-blue-700 text-white font-extrabold text-xs px-6 py-3 rounded-xl transition uppercase tracking-wider shadow-lg">
                 Ingresar al Foro Universitario
